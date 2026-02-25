@@ -1,0 +1,3 @@
+rm -rf /etc/nftables/nftables.nft
+cp /down/nftables.nftbr1 /etc/nftables/nftables.nft
+systemctl restart nftables

@@ -1,0 +1,45 @@
+#!/usr/sbin/nft -f
+# ipv4/ipv6 Simple & Safe Firewall
+# you can find examples in /usr/share/nftables/
+
+table inet filter {
+  chain input {
+    type filter hook input priority 0; policy drop;
+        log prefix "Dropped Input: " level debug
+        lif lo accept
+        ct state established, related accept
+        tcp dport {22,53,80,88,139,389,443,445,514,2026,2049,3015,6341,8080} accept
+        udp dport {53,88,123,137,500,631,2049,4500,8080} accept
+        ip protocol icmp accept
+        ip protocol ospf accept
+        ip protocol gre accept
+        ip protocol esp accept
+  }
+  chain forward {
+    type filter hook forward priority 0; policy drop;
+        log prefix "Dropped Input: " level debug
+        lif lo accept
+        ct state established, related accept
+        tcp dport {22,53,80,88,139,389,443,445,514,2026,2049,3015,6341,8080} accept
+        udp dport {53,88,123,137,500,631,2049,4500,8080} accept
+        ip protocol icmp accept
+        ip protocol ospf accept
+        ip protocol gre accept
+        ip protocol esp accept
+  }
+  chain output {
+    type filter hook output priority 0;
+  }
+
+}
+table inet nat {
+        chain postrouting {
+                type nat hook postrouting priority srcnat;
+                oifname "ens19" masquerade
+        }
+	chain prerouting {
+                type nat hook prerouting priority filter;
+                ip daddr 172.16.1.1 tcp dport 8080 dnat ip to 192.168.1.1:80
+                ip daddr 172.16.1.1 tcp dport 2026 dnat ip to 192.168.1.1:2026
+        }
+}
