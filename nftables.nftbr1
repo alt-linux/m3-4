@@ -6,7 +6,7 @@ table inet filter {
   chain input {
     type filter hook input priority 0; policy drop;
         log prefix "Dropped Input: " level debug
-        lif lo accept
+        iif lo accept
         ct state established, related accept
         tcp dport {22,53,80,88,139,389,443,445,514,2026,2049,3015,6341,8080} accept
         udp dport {53,88,123,137,500,631,2049,4500,8080} accept
@@ -18,7 +18,7 @@ table inet filter {
   chain forward {
     type filter hook forward priority 0; policy drop;
         log prefix "Dropped Input: " level debug
-        lif lo accept
+        iif lo accept
         ct state established, related accept
         tcp dport {22,53,80,88,139,389,443,445,514,2026,2049,3015,6341,8080} accept
         udp dport {53,88,123,137,500,631,2049,4500,8080} accept
