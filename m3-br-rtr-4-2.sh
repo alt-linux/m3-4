@@ -1,1 +1,4 @@
-echo "rm -rf /etc/nftables/nftables.nft && cp /down/nftables.nftbr1 /etc/nftables/nftables.nft && systemctl restart nftables"
+echo " rm -rf /etc/nftables/nftables.nft"
+echo " cp /down/nftables.nftbr1 /etc/nftables/nftables.nft"
+echo "nano /etc/nftables/nftables.nft"
+echo "systemctl restart nftables"
